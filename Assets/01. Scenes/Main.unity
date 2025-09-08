@@ -285,6 +285,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   confirmPanel: {fileID: 7697411854383805541, guid: 3935fe643a21c3a43accb281a77b060c, type: 3}
+  signinPanel: {fileID: 7697411854383805541, guid: 9e6351623d602ef44a62af10bd8276fc, type: 3}
 --- !u!4 &344185563
 Transform:
   m_ObjectHideFlags: 0
