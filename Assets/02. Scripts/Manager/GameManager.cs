@@ -1,12 +1,12 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager>
 {
-    [SerializeField] private GameObject confirmPanel;
-    [SerializeField] private GameObject signinPanel;
-    [SerializeField] private GameObject signupPanel;            
-
+    [SerializeField] private GameObject confirmPanel;           // 확인 패널
+    [SerializeField] private GameObject signinPanel;            // 로그인 패널
+    [SerializeField] private GameObject signupPanel;            // 회원가입 패널
 
     // Main Scene에서 선택한 게임 타입
     private Constants.GameType _gameType;
@@ -22,7 +22,12 @@ public class GameManager : Singleton<GameManager>
 
     private void Start()
     {
-        OpenSigninPanel();
+        // 로그인
+        var sid = PlayerPrefs.GetString("sid");
+        if (string.IsNullOrEmpty(sid))
+        {
+            OpenSigninPanel();
+        }
     }
 
     /// <summary>
@@ -39,6 +44,8 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     public void ChangeToMainScene()
     {
+        _gameLogic?.Dispose();
+        _gameLogic = null;
         SceneManager.LoadScene("Main");
     }
 
@@ -66,6 +73,15 @@ public class GameManager : Singleton<GameManager>
         {
             var signinPanelObject = Instantiate(signinPanel, _canvas.transform);
             signinPanelObject.GetComponent<SigninPanelController>().Show();
+        }
+    }
+
+    public void OpenSignupPanel()
+    {
+        if (_canvas != null)
+        {
+            var signupPanelObject = Instantiate(signupPanel, _canvas.transform);
+            signupPanelObject.GetComponent<SignupPanelController>().Show();
         }
     }
 
@@ -99,16 +115,14 @@ public class GameManager : Singleton<GameManager>
             }
 
             // GameLogic 생성
+            if (_gameLogic != null) _gameLogic.Dispose();
             _gameLogic = new GameLogic(blockController, _gameType);
         }
     }
 
-    public void OpenSignupPanel()
+    private void OnApplicationQuit()
     {
-        if (_canvas != null)
-        {
-            var signupPanelObject = Instantiate(signupPanel, _canvas.transform);
-            signupPanelObject.GetComponent<SignupPanelController>().Show();
-        }
+        _gameLogic?.Dispose();
+        _gameLogic = null;
     }
 }
