@@ -21,7 +21,7 @@ public class PanelController : MonoBehaviour
     /// <summary>
     /// Panel Ç¥½Ã
     /// </summary>
-    public void Show()
+    public virtual void Show()
     {
         _backgroundCanvasGroup.alpha = 0;
         panelRectTransform.localScale = Vector3.zero;
